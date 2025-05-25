@@ -1,0 +1,51 @@
+from datetime import datetime
+
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+from .models import Comments, Likes, Posts
+
+
+class UserSerializer(serializers.ModelSerializer):
+    post = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["__all__", "post"]
+
+    def get_post(self, obj):
+        return Posts.objects.filter(author_id=obj.id).values_list("title", flat=True)
+
+
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source="author.username")
+    author_id = serializers.ReadOnlyField(source="author.id")
+    likes = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Posts
+        fields = [
+            "id",
+            "title",
+            "created_at",
+            "author",
+            "author_id",
+            "content",
+            "likes",
+        ]
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get("title", instance.title)
+        instance.content = validated_data.get("content", instance.content)
+        instance.updated_at = datetime.now()
+        instance.save()
+        return instance
+
+    def get_likes(self, post):
+        return Likes.objects.filter(post=post).count()
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Likes
+        fields = ["id"]

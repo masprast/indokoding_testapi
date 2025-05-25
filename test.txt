@@ -1,0 +1,22 @@
+SERVER=localhost:8000/
+
+POST /user/register/
+{
+	'username': 'newuser',
+	'password':'rahasia',
+	'email':'user@contoh.net'
+}
+
+POST /user/login/
+{
+	'username':'newuser',
+	'password':'rahasia'
+}
+
+POST /user/logout/
+
+CRUD
+GET /user/ "Authorization: Token <token>"
+POST /user/ "Authorization: Token <token>"
+PUT /user/<id>/ "Authorization: Token <token>"
+DELETE /user/<id>/ "Authorization: Token <token>"
