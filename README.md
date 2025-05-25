@@ -14,6 +14,8 @@ python -m venv venv
 . venv/bin/activate
 ```
 
+---
+
 ## Persiapan Awal
 
 1.  **Pastikan semua dependensi terinstal:**
@@ -41,6 +43,17 @@ python -m venv venv
     python manage.py runserver
     ```
 5.  **Akses Swagger UI** di `http://127.0.0.1:8000/api/schema/swagger-ui/` untuk pengetesan interaktif.
+
+---
+
+## Docker
+Pengujian dapat dilakukan dengan Docker, guna memberika kepraktisan dalam deployment. Untuk menjalankan docker, cukup dengan perintah:
+
+```bash
+docker compose up --build
+```
+
+> Tidak perlu melakukan 'Persiapan Awal'
 
 ---
 

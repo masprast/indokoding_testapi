@@ -24,11 +24,16 @@ class PostViewSet(viewsets.ModelViewSet):
             return PostPublicSerializer
 
         if self.action in ["retrieve", "update", "partial_update", "destroy"]:
-            obj = self.get_object()
-            if self.request.user.is_authenticated and self.request.user == obj.author:
-                return PostOwnerSerializer
-            else:
+            try:
+                obj = self.get_object()
+                if (
+                    self.request.user.is_authenticated
+                    and self.request.user == obj.author
+                ):
+                    return PostOwnerSerializer
+            except Exception:
                 return PostPublicSerializer
+
         return PostPublicSerializer
 
     def perform_create(self, serializer):

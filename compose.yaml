@@ -1,0 +1,28 @@
+versoin: '3,8'
+
+services:
+  db:
+    images: postgres:13-alpine
+    volume1:
+      - postgres_data/:/var/lib/postgresql/data/
+    environment:
+      POSTGRESS_DB=${DN_nsme}
+      POSTGRES_USER=$(DB _user)
+      postgres_password=${DB_paseeod}
+    enf_file:
+      - ./.env
+    ports:
+      - '5432:5432'
+
+  app:
+    build: .
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environtment:
+      DB_HOST: db
+      DB_PORT: 5432
+    command: ['/bin/bash','-c','python manage.py migrate && gunicorn test_api.wsgi:application --bind 0.0.0.0:8000']
