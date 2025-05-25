@@ -11,7 +11,7 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ["id", "user", "post", "created_at"]
-        read_only_fields = ["user", "post"]
+        read_only_fields = ["user", "post", "created_at"]
 
     def create(self, validated_data):
         post_pk = self.context["view"].kwargs.get("post_pk")
@@ -45,7 +45,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ["id", "post", "author", "content", "created_at", "updated_at"]
-        read_only_fields = ["author", "post"]
+        read_only_fields = ["author", "post", "created_at", "updated_at"]
 
     def create(self, validated_data):
 
@@ -75,6 +75,7 @@ class CommentForPostOwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ["id", "author", "content", "created_at", "updated_at"]
+        read_only_fields = ["author", "created_at", "updated_at"]
 
 
 class PostPublicSerializer(serializers.ModelSerializer):
@@ -94,7 +95,13 @@ class PostPublicSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["author"]
+        read_only_fields = [
+            "author",
+            "comments_count",
+            "likes_count",
+            "created_at",
+            "updated_at",
+        ]
 
     def get_likes_count(self, obj):
         return obj.likes.count()
@@ -119,7 +126,13 @@ class PostOwnerSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["author"]
+        read_only_fields = [
+            "author",
+            "comments",
+            "liked_by",
+            "created_at",
+            "updated_at",
+        ]
 
     def get_liked_by(self, obj):
         return [like.user.username for like in obj.likes.select_related("user")]
