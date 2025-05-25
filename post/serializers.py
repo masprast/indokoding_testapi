@@ -144,3 +144,5 @@ class PostOwnerSerializer(serializers.ModelSerializer):
         return CommentForPostOwnerSerializer(
             comments_queryset, many=True, context=self.context
         ).data
+
+
