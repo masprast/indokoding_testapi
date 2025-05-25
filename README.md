@@ -14,7 +14,6 @@ python -m venv venv
 . venv/bin/activate
 ```
 
-
 ## Persiapan Awal
 
 1.  **Pastikan semua dependensi terinstal:**
