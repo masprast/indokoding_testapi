@@ -2,23 +2,24 @@ import os
 
 import django
 
+from post.models import Comment, Like, Post
+from user.models import PostUser
+
 os.environ.setdefault("DJANGO_SETTINGS_MODLUE", "test_api.settings")
 django.setup()
 
-from post.models import Comment, Like, Post
-from user.models import PostUser
 
 print("-- Memulai proses seeding data --")
 
 data = [
-    {"user": "rokhayati", "password": "password"},
-    {"user": "marjuki", "password": "qwertyuiop"},
-    {"user": "bejo", "password": "qwasxz"},
+    {"user": "user1", "password": "password123"},
+    {"user": "user2", "password": "password123"},
+    {"user": "user3", "password": "password123"},
 ]
 for user in data:
     user_created, created = PostUser.objects.get_or_create(
         username=user.user,
-        defaults={"email": str(user.user + "@email.org"), "password": user.password},
+        defaults={"email": f"{user.user}@example.com", "password": user.password},
     )
     if created:
         user_created.set_password(user.password)

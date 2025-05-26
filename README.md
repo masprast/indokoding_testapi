@@ -42,7 +42,7 @@ python -m venv venv
     ```bash
     python manage.py runserver
     ```
-5.  **Akses Swagger UI** di `http://127.0.0.1:8000/api/schema/swagger-ui/` untuk pengetesan interaktif.
+5.  **Akses Swagger UI** di `http://127.0.0.1:8000/schema/swagger-ui/` untuk pengetesan interaktif.
 
 ---
 
@@ -63,7 +63,7 @@ Berikut adalah beberapa data contoh yang akan digunakan dalam pengetesan. Anggap
 
 * **User Admin**:
     * `username`: `admin`
-    * `password`: `admin123` (sesuai yang Anda buat)
+    * `password`: `admin123` (silakan disesuaikan)
 * **User Biasa**:
     * `username`: `user1`, `user2`, `user3`
     * `password`: `password123`
@@ -72,11 +72,11 @@ Berikut adalah beberapa data contoh yang akan digunakan dalam pengetesan. Anggap
 
 ## Skenario Pengetesan & Contoh Respons
 
-Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpoint `/api/login/` untuk mendapatkan token `access` dan masukkan ke otorisasi `Bearer Auth`.
+Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpoint `/api/user/login/` untuk mendapatkan token `access` dan masukkan ke otorisasi `Bearer Auth`.
 
 ### 1. User Authentication
 
-#### **Endpoint:** `/api/login/` (POST)
+#### **Endpoint:** `/api/user/login/` (POST)
 * **Tujuan:** Mendapatkan token akses JWT.
 * **Data Request:**
     ```json
@@ -94,7 +94,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ```
 * **Langkah Lanjut:** Salin `access` token dan masukkan ke tombol `Authorize` di Swagger UI dengan format `Bearer <token>`.
 
-#### **Endpoint:** `/api/register/` (POST)
+#### **Endpoint:** `/api/user/register/` (POST)
 * **Tujuan:** Membuat user baru.
 * **Data Request:**
     ```json
@@ -119,7 +119,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
 
 ### 2. User Management (Admin Only)
 
-#### **Endpoint:** `/api/users/` (GET)
+#### **Endpoint:** `/api/user/users/` (GET)
 * **Tujuan:** Melihat daftar semua user.
 * **Persyaratan:** Login sebagai **admin**.
 * **Contoh Respons (Sukses):**
@@ -142,7 +142,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ]
     ```
 
-#### **Endpoint:** `/api/users/{id}/` (GET)
+#### **Endpoint:** `/api/user/users/{id}/` (GET)
 * **Tujuan:** Melihat detail user tertentu.
 * **Persyaratan:** Login sebagai **admin**.
 * **Contoh Respons (Sukses, untuk user1):**
@@ -160,7 +160,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
 
 ### 3. Post Management
 
-#### **Endpoint:** `/api/posts/` (POST)
+#### **Endpoint:** `/api/post/posts/` (POST)
 * **Tujuan:** Membuat post baru.
 * **Persyaratan:** Login sebagai **user biasa** (misal user1).
 * **Data Request:**
@@ -183,7 +183,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     }
     ```
 
-#### **Endpoint:** `/api/posts/` (GET)
+#### **Endpoint:** `/api/post/posts/` (GET)
 * **Tujuan:** Melihat daftar semua post.
 * **Persyaratan:** Dapat diakses tanpa login (public).
 * **Contoh Respons (Sukses):**
@@ -210,7 +210,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ]
     ```
 
-#### **Endpoint:** `/api/posts/{id}/` (GET - Owner vs Non-Owner)
+#### **Endpoint:** `/api/post/posts/{id}/` (GET - Owner vs Non-Owner)
 * **Tujuan:** Melihat detail post tertentu.
 * **Persyaratan:**
     * **Sebagai non-owner (user2 melihat post user1):** Login sebagai user2.
@@ -253,7 +253,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     }
     ```
 
-#### **Endpoint:** `/api/posts/{id}/` (PUT/PATCH)
+#### **Endpoint:** `/api/post/posts/{id}/` (PUT/PATCH)
 * **Tujuan:** Mengupdate post.
 * **Persyaratan:** Login sebagai **owner post**.
 * **Data Request (PUT - ID Post 1):**
@@ -265,7 +265,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ```
 * **Contoh Respons (Sukses):** Mirip dengan GET detail, tapi dengan data yang diupdate.
 
-#### **Endpoint:** `/api/posts/{id}/` (DELETE)
+#### **Endpoint:** `/api/post/posts/{id}/` (DELETE)
 * **Tujuan:** Menghapus post.
 * **Persyaratan:** Login sebagai **owner post**.
 * **Contoh Respons (Sukses):** HTTP 204 No Content.
@@ -274,7 +274,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
 
 ### 4. Like Management
 
-#### **Endpoint:** `/api/posts/{post_id}/likes/` (POST)
+#### **Endpoint:** `/api/post/posts/{post_id}/likes/` (POST)
 * **Tujuan:** Memberikan like pada post.
 * **Persyaratan:** Login sebagai **user biasa** (misal user2, like post ID 1).
 * **Data Request:** (Body kosong atau `{}` jika required by Swagger UI)
@@ -292,7 +292,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ```
 * **Catatan:** Jika user yang sama mencoba like lagi, akan ada `ValidationError` "You have already liked this post."
 
-#### **Endpoint:** `/api/posts/{post_id}/likes/` (GET)
+#### **Endpoint:** `/api/post/posts/{post_id}/likes/` (GET)
 * **Tujuan:** Melihat daftar like pada post tertentu.
 * **Persyaratan:** Dapat diakses tanpa login (public).
 * **Contoh Respons (Sukses - Post ID 1, setelah user2 like):**
@@ -307,7 +307,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ]
     ```
 
-#### **Endpoint:** `/api/posts/{post_id}/likes/{id}/` (DELETE)
+#### **Endpoint:** `/api/post/posts/{post_id}/likes/{id}/` (DELETE)
 * **Tujuan:** Menghapus like dari post.
 * **Persyaratan:** Login sebagai **user yang memberikan like tersebut** (misal user2, hapus like ID 1 pada Post ID 1).
 * **Contoh Respons (Sukses):** HTTP 204 No Content.
@@ -316,7 +316,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
 
 ### 5. Comment Management
 
-#### **Endpoint:** `/api/posts/{post_id}/comments/` (POST)
+#### **Endpoint:** `/api/post/posts/{post_id}/comments/` (POST)
 * **Tujuan:** Membuat komentar pada post.
 * **Persyaratan:** Login sebagai **user biasa** (misal user3, comment post ID 1).
 * **Data Request:**
@@ -337,7 +337,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     }
     ```
 
-#### **Endpoint:** `/api/posts/{post_id}/comments/` (GET)
+#### **Endpoint:** `/api/post/posts/{post_id}/comments/` (GET)
 * **Tujuan:** Melihat daftar komentar pada post tertentu.
 * **Persyaratan:** Dapat diakses tanpa login (public).
 * **Contoh Respons (Sukses - Post ID 1, setelah user3 comment):**
@@ -354,7 +354,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ]
     ```
 
-#### **Endpoint:** `/api/posts/{post_id}/comments/{id}/` (PUT/PATCH)
+#### **Endpoint:** `/api/post/posts/{post_id}/comments/{id}/` (PUT/PATCH)
 * **Tujuan:** Mengupdate komentar.
 * **Persyaratan:** Login sebagai **user yang membuat komentar tersebut**.
 * **Data Request (PATCH - Comment ID 1, Post ID 1):**
@@ -365,7 +365,7 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
     ```
 * **Contoh Respons (Sukses):** Mirip dengan GET detail, tapi dengan data yang diupdate.
 
-#### **Endpoint:** `/api/posts/{post_id}/comments/{id}/` (DELETE)
+#### **Endpoint:** `/api/post/posts/{post_id}/comments/{id}/` (DELETE)
 * **Tujuan:** Menghapus komentar.
 * **Persyaratan:** Login sebagai **user yang membuat komentar tersebut**.
 * **Contoh Respons (Sukses):** HTTP 204 No Content.
