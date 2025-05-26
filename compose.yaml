@@ -26,3 +26,6 @@ services:
       DB_HOST: db
       DB_PORT: 5432
     command: ['/bin/bash','-c','python manage.py migrate && gunicorn test_api.wsgi:application --bind 0.0.0.0:8000']
+
+volumes:
+  postgres_data:
