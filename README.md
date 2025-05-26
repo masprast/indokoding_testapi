@@ -102,7 +102,8 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
         "username": "newuser",
         "email": "newuser@example.com",
         "password": "securepassword",
-        "password2": "securepassword"
+        "first_name": "new",
+        "last_name": "user"
     }
     ```
 * **Contoh Respons (Sukses):**
@@ -129,17 +130,23 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
             "id": 1,
             "username": "admin",
             "email": "admin@example.com",
+            "first_name": "",
+            "last_name": "",
             "is_staff": true,
+            "is_active": true,
             "date_joined": "2024-05-25T17:00:00Z"
         },
         {
             "id": 2,
             "username": "user1",
             "email": "user1@example.com",
+            "first_name": "user",
+            "last_name": "1",
             "is_staff": false,
+            "is_active": true,
             "date_joined": "2024-05-25T17:01:00Z"
-        }
-    ]
+        }   
+     ]
     ```
 
 #### **Endpoint:** `/api/user/users/{id}/` (GET)
@@ -151,7 +158,10 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
         "id": 2,
         "username": "user1",
         "email": "user1@example.com",
+        "first_name": "user",
+        "last_name": "1",
         "is_staff": false,
+        "is_active": true,
         "date_joined": "2024-05-25T17:01:00Z"
     }
     ```
@@ -179,7 +189,8 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
         "author": "user1",
         "created_at": "2024-05-25T17:05:00Z",
         "updated_at": "2024-05-25T17:05:00Z",
-        "likes_count": 0
+        "likes_count": 0,
+        "comments_count": 0
     }
     ```
 
@@ -194,18 +205,20 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
             "title": "My First Post",
             "content": "This is the content of my first post.",
             "author": "user1",
+            "comments_count": 1,
+            "likes_count": 0,
             "created_at": "2024-05-25T17:05:00Z",
-            "updated_at": "2024-05-25T17:05:00Z",
-            "likes_count": 0
+            "updated_at": "2024-05-25T17:05:00Z",            
         },
         {
             "id": 2,
             "title": "Another Post by User2",
             "content": "Hello from User2!",
             "author": "user2",
+            "comments_count": 1,
+            "likes_count": 0,
             "created_at": "2024-05-25T17:06:00Z",
-            "updated_at": "2024-05-25T17:06:00Z",
-            "likes_count": 0
+            "updated_at": "2024-05-25T17:06:00Z"
         }
     ]
     ```
@@ -221,10 +234,11 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
         "id": 1,
         "title": "My First Post",
         "content": "This is the content of my first post.",
-        "author": "user1",
+        "author": 1,
+        "comments_count": 1,
+        "likes_count": 0,
         "created_at": "2024-05-25T17:05:00Z",
         "updated_at": "2024-05-25T17:05:00Z",
-        "likes_count": 0,
         "liked_by": null,       <-- Null karena bukan owner
         "comments": null        <-- Null karena bukan owner
     }
@@ -236,15 +250,14 @@ Untuk setiap skenario, **login terlebih dahulu** di Swagger UI menggunakan endpo
         "id": 1,
         "title": "My First Post",
         "content": "This is the content of my first post.",
-        "author": "user1",
+        "author": 1,
         "created_at": "2024-05-25T17:05:00Z",
         "updated_at": "2024-05-25T17:05:00Z",
-        "likes_count": 1,
         "liked_by": ["user2"],
         "comments": [
             {
                 "id": 1,
-                "user": "user3",
+                "author": "user3",
                 "content": "Great post!",
                 "created_at": "2024-05-25T17:10:00Z",
                 "updated_at": "2024-05-25T17:10:00Z"
